@@ -1,6 +1,7 @@
 import unittest
 from main import PaginationGenerator
 
+
 class TestPagination(unittest.TestCase):
     def setUp(self):
         self.generator = PaginationGenerator()
@@ -94,6 +95,7 @@ class TestPagination(unittest.TestCase):
     def test_pagination_around_not_int(self):
         with self.assertRaises(TypeError):
             self.pagination(4, 10, 1, [2, 3])
+
 
 if __name__ == "__main__":
     unittest.main()

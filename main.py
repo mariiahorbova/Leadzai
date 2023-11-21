@@ -1,6 +1,48 @@
 class PaginationGenerator():
 
-    ELLIPSIS = "..."   
+    ELLIPSIS = "..."
+
+    def generate_pagination(self, current_page, total_pages, boundaries, around):
+        result_list = []
+
+        self.validate_input(current_page, total_pages, boundaries, around)
+        simple_pagination_list = self.simple_generation(
+            current_page, total_pages, boundaries, around
+        )
+
+        if simple_pagination_list:
+            pagination = " ".join(map(str, simple_pagination_list))
+            print(pagination)
+            return pagination
+
+        (
+            boundaries_start_last_page,
+            boundaries_end_first_page,
+            around_current_page_list
+        ) = self.get_base_values(current_page, total_pages, boundaries, around)
+
+        start = self.check_start(
+            current_page,
+            around,
+            boundaries_start_last_page,
+            around_current_page_list,
+            boundaries
+        )
+
+        end = self.check_end(
+            current_page,
+            around,
+            boundaries_end_first_page,
+            around_current_page_list,
+            total_pages
+        )
+
+        result_list.extend(start)
+        result_list.extend(end)
+
+        pagination = " ".join(map(str, result_list))
+        print(pagination)
+        return pagination
 
     def validate_input(self, current_page, total_pages, boundaries, around):
         all_arguments = [current_page, total_pages, boundaries, around]
@@ -40,42 +82,6 @@ class PaginationGenerator():
             boundaries_end_first_page, 
             around_current_page_list,
         )
-
-    def generate_pagination(self, current_page, total_pages, boundaries, around):
-        result_list = []
-
-        self.validate_input(current_page, total_pages, boundaries, around)
-        simple_pagination_list = self.simple_generation(current_page, total_pages, boundaries, around)
-
-        if simple_pagination_list:
-            return " ".join(map(str, simple_pagination_list))
-
-        (
-            boundaries_start_last_page,
-            boundaries_end_first_page,
-            around_current_page_list
-        ) = self.get_base_values(current_page, total_pages, boundaries, around)
-
-        start = self.check_start(
-            current_page,
-            around,
-            boundaries_start_last_page,
-            around_current_page_list,
-            boundaries
-        )
-
-        end = self.check_end(
-            current_page,
-            around,
-            boundaries_end_first_page,
-            around_current_page_list,
-            total_pages
-        )
-
-        result_list.extend(start)
-        result_list.extend(end)
-
-        return " ".join(map(str, result_list))
 
     def check_start(
         self,
